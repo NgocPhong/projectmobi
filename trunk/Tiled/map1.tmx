@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="9" height="16" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="dichken-Blend tang mau cho anh-14" tilewidth="32" tileheight="32">
+  <image source="dichken-Blend tang mau cho anh-14.jpg" width="1024" height="673"/>
+ </tileset>
+ <layer name="Tile Layer 1" width="9" height="16">
+  <data encoding="base64" compression="zlib">
+   eJwN0OlBgQEAANCv/skRY1SOGsNVGsNVjKELY7g1BjnHKCEb9H68BV4rCIIXXnnjnQ/adOjSo8+AISPGTJjyyYw5XyxYsmLNhi3f/LDjlz0HjvxxInQWBBeEiRAlxiVxElxxzQ1JUqTJcMsdWXLkKVDkngdKPFKmQpUadZ54pkGTFi+88sY7H7Tp0KVHnwFDRoyZMOWTGXO+WLBkxZoNW775Yccvew4c+eNE6NwPYSJEiXFJnARXXHNDkhRpMtxyR5YceQoUueeBEo+UqVClRp0nnmnQ5B/6ukbh
+  </data>
+ </layer>
+</map>
