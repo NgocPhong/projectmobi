@@ -1,11 +1,11 @@
-package com.example.demophisic;
+package com.TP.dd;
 
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.text.Text;
 import org.andengine.util.adt.color.Color;
 
 
-import com.example.demophisic.SceneManager.SceneType;
+import com.TP.dd.SceneManager.SceneType;
 
 public class LoadingScene extends BaseScene {
 
