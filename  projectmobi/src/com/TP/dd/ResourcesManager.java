@@ -1,4 +1,4 @@
-package com.example.demophisic;
+package com.TP.dd;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ public class ResourcesManager {
 	private static final ResourcesManager INSTANCE = new ResourcesManager();
 
 	public Engine engine;
-	public MainActivity activity;
+	public Main activity;
 
 	public Camera camera;
 	public VertexBufferObjectManager vbom;
@@ -231,7 +231,7 @@ public class ResourcesManager {
 	 *            Resources Manager properly, setting all needed parameters, so
 	 *            we can latter access them from different classes (eg. scenes)
 	 */
-	public static void prepareManager(Engine engine, MainActivity activity,
+	public static void prepareManager(Engine engine, Main activity,
 			Camera camera, VertexBufferObjectManager vbom) {
 		getInstance().engine = engine;
 		getInstance().activity = activity;

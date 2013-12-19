@@ -1,4 +1,4 @@
-package com.example.demophisic;
+package com.TP.dd;
 
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
@@ -8,7 +8,7 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 import org.andengine.engine.camera.Camera;
-import com.example.demophisic.SceneManager.SceneType;
+import com.TP.dd.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener {
 

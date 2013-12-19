@@ -1,11 +1,10 @@
-package com.example.demophisic;
-
+package com.TP.dd;
 import org.andengine.engine.Engine;
 import org.andengine.engine.camera.Camera;
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import com.example.demophisic.SceneManager.SceneType;
+import com.TP.dd.SceneManager.SceneType;
 
 import android.app.Activity;
 

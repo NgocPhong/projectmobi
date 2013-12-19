@@ -1,4 +1,4 @@
-package com.example.demophisic;
+package com.TP.dd;
 
 import org.andengine.entity.modifier.IEntityModifier;
 

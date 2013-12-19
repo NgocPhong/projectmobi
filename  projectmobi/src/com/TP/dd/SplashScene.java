@@ -1,9 +1,9 @@
-package com.example.demophisic;
+package com.TP.dd;
 
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
-import com.example.demophisic.SceneManager.SceneType;
+import com.TP.dd.SceneManager.SceneType;
 
 public class SplashScene extends BaseScene {
 

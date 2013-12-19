@@ -1,4 +1,4 @@
-package com.example.demophisic;
+package com.TP.dd;
 
 import java.io.IOException;
 
@@ -36,7 +36,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.example.demophisic.SceneManager.SceneType;
+import com.TP.dd.SceneManager.SceneType;
 
 public class GameScene extends BaseScene {
 	private static final String TAG_ENTITY = "entity";
