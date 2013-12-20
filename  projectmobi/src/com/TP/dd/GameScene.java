@@ -1,9 +1,13 @@
 package com.TP.dd;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.MoveYModifier;
@@ -36,6 +40,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.TP.dd.LevelCompleteWindow.StarsCount;
 import com.TP.dd.SceneManager.SceneType;
 
 public class GameScene extends BaseScene {
