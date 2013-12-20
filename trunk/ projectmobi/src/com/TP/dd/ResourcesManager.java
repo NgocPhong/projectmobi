@@ -17,6 +17,7 @@ import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSourc
 import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.debug.Debug;
@@ -62,6 +63,9 @@ public class ResourcesManager {
 	public ITextureRegion platform2_region;
 	public ITextureRegion platform3_region;
 	public ITextureRegion coin_region;
+	// Level Complete Window
+		public ITextureRegion complete_window_region;
+		public ITiledTextureRegion complete_stars_region;
 	// ---------------------------------------------
 	// Music
 	// ---------------------------------------------
@@ -125,12 +129,12 @@ public class ResourcesManager {
 		game_background_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(balloonTextureAtlas, activity,
 						"game_background.png");
-		platform1_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(balloonTextureAtlas, activity, "face_box2.png");
-		platform2_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(balloonTextureAtlas, activity, "face_box3.png");
+		
 		balloon_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(balloonTextureAtlas, activity, "face_box.png");
+		complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
+		complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
+
 		try {
 			this.balloonTextureAtlas
 					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(

@@ -7,6 +7,7 @@ import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.align.HorizontalAlign;
 
@@ -28,6 +29,12 @@ public class balloon extends Sprite {
 		Textchar.setPosition(50,90);
 	
 		// TODO Auto-generated constructor stub
+	}
+
+	public balloon(int x, int y, ITiledTextureRegion complete_stars_region,
+			VertexBufferObjectManager vbom) {
+		// TODO Auto-generated constructor stub
+		super(x, y, complete_stars_region, vbom);
 	}
 
 	@Override
