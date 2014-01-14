@@ -1,11 +1,22 @@
-<level Keyword="haha" speed ="10">    
+<level Keyword="student" speed ="10">    
     <entity x="100" y="100" type="nomalballoon" time="1f" char="c"/>
-    <entity x="200" y="200" type="nomalballoon" time="2f" char="a"/>
+    <entity x="200" y="200" type="nomalballoon" time="2f" char="s"/>
     <entity x="300" y="200" type="nomalballoon" time="3f" char="h"/>
     <entity x="250" y="300" type="nomalballoon" time="4f" char="h"/>
-    <entity x="320" y="240" type="nomalballoon" time="5f" char="n"/>
+    <entity x="320" y="240" type="nomalballoon" time="5f" char="t"/>
     <entity x="200" y="270" type="trap" time="6f" char="m"/>
     <entity x="300" y="400" type="trap" time="7f" char="r"/>
     <entity x="400" y="400" type="nomalballoon" time="8f" char="a"/>
+    <entity x="100" y="100" type="nomalballoon" time="9f" char="u"/>
+    <entity x="200" y="200" type="nomalballoon" time="10f" char="a"/>
+    <entity x="300" y="200" type="nomalballoon" time="11f" char="d"/>
+    <entity x="250" y="300" type="nomalballoon" time="12f" char="h"/>
+    <entity x="320" y="240" type="nomalballoon" time="13f" char="e"/>
+    <entity x="200" y="270" type="trap" time="14f" char="m"/>
+    <entity x="300" y="400" type="trap" time="15f" char="r"/>
+    <entity x="400" y="400" type="nomalballoon" time="16f" char="a"/>
+    <entity x="300" y="200" type="nomalballoon" time="17f" char="n"/>
+    <entity x="250" y="300" type="nomalballoon" time="18f" char="t"/>
+    <entity x="320" y="240" type="nomalballoon" time="19f" char="e"/>
     
 </level>
