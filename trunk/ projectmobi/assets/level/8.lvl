@@ -1,13 +1,13 @@
-<level Keyword="family" speed ="4">    
-    <entity x="100" y="100" type="nomalballoon" time="1f" char="c"/>
+<level Keyword="example" speed ="4">    
+    <entity x="100" y="100" type="nomalballoon" time="1f" char="e"/>
     <entity x="200" y="200" type="nomalballoon" time="2f" char="b"/>
-    <entity x="300" y="200" type="nomalballoon" time="3f" char="p"/>
+    <entity x="300" y="200" type="nomalballoon" time="3f" char=""/>
     <entity x="250" y="300" type="nomalballoon" time="4f" char="h"/>
     <entity x="320" y="240" type="nomalballoon" time="5f" char="v"/>
     <entity x="200" y="270" type="trap" time="6f" char="m"/>
     <entity x="300" y="400" type="trap" time="7f" char="r"/>
     <entity x="400" y="400" type="nomalballoon" time="8f" char="f"/>
-    <entity x="100" y="100" type="nomalballoon" time="9f" char="l"/>
+    <entity x="100" y="100" type="nomalballoon" time="9f" char="x"/>
     <entity x="200" y="200" type="nomalballoon" time="10f" char="a"/>
     <entity x="300" y="200" type="nomalballoon" time="11f" char="d"/>
     <entity x="250" y="300" type="nomalballoon" time="12f" char="f"/>
@@ -18,7 +18,7 @@
     <entity x="300" y="200" type="nomalballoon" time="17f" char="p"/>
     <entity x="250" y="300" type="nomalballoon" time="18f" char="i"/>
     <entity x="320" y="240" type="nomalballoon" time="19f" char="e"/> 
-    <entity x="100" y="100" type="nomalballoon" time="20f" char="i"/>
+    <entity x="100" y="100" type="nomalballoon" time="20f" char="p"/>
     <entity x="200" y="200" type="nomalballoon" time="21f" char="o"/>
     <entity x="300" y="200" type="nomalballoon" time="22f" char="l"/>
     <entity x="250" y="300" type="nomalballoon" time="23f" char="o"/>
