@@ -16,6 +16,7 @@ public class SceneManager {
     private BaseScene loadingScene;
     private BaseScene optionScene;
     private BaseScene helpScene;
+    private BaseScene levelScene;
     
     //---------------------------------------------
     // VARIABLES
@@ -37,6 +38,8 @@ public class SceneManager {
         SCENE_LOADING,
         SCENE_OPTION,
         SCENE_HELP,
+        SCENE_LEVEL,
+        
     }
     
     //---------------------------------------------
