@@ -46,6 +46,7 @@ public class ResourcesManager {
 	private BitmapTextureAtlas splashTextureAtlas;
 	// menu screen
 	public ITextureRegion menu_background_region;
+	public ITextureRegion menu_help_background_region;
 	public ITextureRegion play_region;
 	public ITextureRegion options_region;
 	public ITextureRegion help_region;
@@ -111,6 +112,9 @@ public class ResourcesManager {
 		menu_background_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity,
 						"menu_background.png");
+		menu_help_background_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(menuTextureAtlas, activity,
+						"menu_help_background.png");
 		play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				menuTextureAtlas, activity, "play.png");
 		options_region = BitmapTextureAtlasTextureRegionFactory

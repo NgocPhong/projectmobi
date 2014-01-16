@@ -39,8 +39,8 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	    menuChildScene.buildAnimations();
 	    menuChildScene.setBackgroundEnabled(false);
 	    
-	    playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY());
-	    optionsMenuItem.setPosition(optionsMenuItem.getX(), optionsMenuItem.getY()-50);
+	    playMenuItem.setPosition(playMenuItem.getX(), playMenuItem.getY()-100);
+	    optionsMenuItem.setPosition(optionsMenuItem.getX(), optionsMenuItem.getY()-150);
 	    helpMenuItem.setPosition(optionsMenuItem.getX(), optionsMenuItem.getY()-150);
 	    
 	    menuChildScene.setOnMenuItemClickListener(this);
@@ -87,8 +87,9 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	             return true;
 	        case MENU_OPTIONS:
 	        	SceneManager.getInstance().createOptionScene();
+	             return true;
 	        case MENU_HELP:
-	        	SceneManager.getInstance().createOptionScene();
+	        	SceneManager.getInstance().createHelpScene();
 	            return true;
 	        default:
 	            return false;
