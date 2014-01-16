@@ -1,0 +1,67 @@
+<level Keyword="perfect" speed ="10"> 
+
+ 	<entity x="120" y="100" type="nomalballoon" time="1f" char="r"/>
+    <entity x="180" y="100" type="nomalballoon" time="1f" char="e"/>
+    <entity x="240" y="100" type="nomalballoon" time="1f" char="a"/>
+    <entity x="300" y="100" type="nomalballoon" time="1f" char="d"/>
+    <entity x="360" y="100" type="nomalballoon" time="1f" char="y"/>
+    
+    <entity x="60" y="100" type="nomalballoon" time="3f" char="p"/>
+    <entity x="120" y="200" type="nomalballoon" time="4f" char="f"/>
+    <entity x="180" y="200" type="nomalballoon" time="5f" char="e"/>
+    <entity x="240" y="300" type="nomalballoon" time="6f" char="h"/>
+    <entity x="300" y="240" type="nomalballoon" time="7f" char="a"/>
+    <entity x="360" y="270" type="trap" time="8f" char="m"/>
+    <entity x="420" y="400" type="trap" time="9f" char="r"/>
+    <entity x="360" y="400" type="nomalballoon" time="10f" char="r"/>
+    <entity x="300" y="100" type="nomalballoon" time="11f" char="l"/>
+    <entity x="240" y="200" type="nomalballoon" time="12f" char="m"/>
+    <entity x="180" y="200" type="nomalballoon" time="13f" char="d"/>
+    <entity x="120" y="300" type="nomalballoon" time="14f" char="i"/>
+    <entity x="60" y="240" type="nomalballoon" time="15f" char="o"/>
+    
+    <entity x="240" y="400" type="trap" time="16f" char="r"/>
+    
+    
+    <entity x="120" y="100" type="nomalballoon" time="18f" char="f"/>
+    <entity x="360" y="100" type="nomalballoon" time="18f" char="a"/>
+    <entity x="180" y="100" type="nomalballoon" time="19f" char="s"/>
+    <entity x="300" y="100" type="nomalballoon" time="19f" char="g"/>
+    <entity x="240" y="100" type="nomalballoon" time="20f" char="e"/>
+    <entity x="180" y="100" type="nomalballoon" time="21f" char="s"/>
+    <entity x="300" y="100" type="nomalballoon" time="21f" char="g"/>
+    <entity x="120" y="100" type="nomalballoon" time="22f" char="a"/>
+    <entity x="360" y="100" type="nomalballoon" time="22f" char="a"/>
+    
+    <entity x="240" y="100" type="nomalballoon" time="24f" char="a"/>
+    <entity x="180" y="100" type="nomalballoon" time="25f" char="c"/>
+    <entity x="240" y="100" type="nomalballoon" time="25f" char="a"/>
+    <entity x="300" y="100" type="nomalballoon" time="25" char="r"/>
+    <entity x="120" y="100" type="nomalballoon" time="26f" char="t"/>
+    <entity x="180" y="100" type="nomalballoon" time="26f" char="t"/>
+    <entity x="240" y="100" type="nomalballoon" time="26f" char="y"/>
+    <entity x="300" y="100" type="nomalballoon" time="26f" char="r"/>
+    <entity x="360" y="100" type="nomalballoon" time="26f" char="t"/>
+    
+
+	<entity x="240" y="60" type="nomalballoon" time="27f" char="d"/>
+   	<entity x="180" y="120" type="nomalballoon" time="27.5f" char="c"/>
+    <entity x="300" y="120" type="nomalballoon" time="27.5f" char="e"/>
+    <entity x="120" y="180" type="nomalballoon" time="28f" char="b"/>
+    <entity x="360" y="180" type="nomalballoon" time="28f" char="f"/>
+    <entity x="180" y="240" type="nomalballoon" time="29.5f" char="c"/>
+    <entity x="300" y="240" type="nomalballoon" time="29.5f" char="e"/>
+    <entity x="240" y="300" type="nomalballoon" time="30f" char="d"/>
+
+	<entity x="240" y="60" type="nomalballoon" time="31f" char="d"/>
+   	<entity x="180" y="120" type="nomalballoon" time="32.5f" char="c"/>
+    <entity x="300" y="120" type="nomalballoon" time="32.5f" char="e"/>
+    <entity x="120" y="180" type="nomalballoon" time="33f" char="b"/>
+    <entity x="360" y="180" type="nomalballoon" time="33f" char="f"/>
+    <entity x="180" y="240" type="nomalballoon" time="34.5f" char="c"/>
+    <entity x="300" y="240" type="nomalballoon" time="34.5f" char="e"/>
+    <entity x="240" y="300" type="nomalballoon" time="35f" char="d"/>
+	
+
+    
+</level>
