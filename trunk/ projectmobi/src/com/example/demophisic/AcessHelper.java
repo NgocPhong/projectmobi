@@ -1,5 +1,9 @@
 package com.example.demophisic;
 
+/////////////////////////////////////////////////////////////////////////////////
+//////////////////// 1112219 - cu ngoc phong/////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 import java.io.IOException;
 
 import android.content.Context;
@@ -27,20 +31,24 @@ public class AcessHelper {
 			// Tao bang trong co so du lieu
 
 			try {
-				db.execSQL("CREATE TABLE IF NOT EXISTS [thongtin] ([_id] INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT, [quan] TEXT  ,[level] TEXT  NULL,[thoigian] TEXT  NULL,[diemcao] TEXT  NULL)");
+				db.execSQL("CREATE TABLE IF NOT EXISTS [thongtin] ([_id] INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT, [quan] TEXT  ,[level] TEXT  NULL,[thoigian] TEXT  NULL,[Tien] TEXT  NULL)");
+				db.execSQL("CREATE TABLE IF NOT EXISTS [Items] ([_id] INTEGER  NOT NULL PRIMARY KEY AUTOINCREMENT, [Ten] TEXT  ,[GiaTien] TEXT  NULL)");
 
-				db.execSQL("insert into thongtin(quan, level,thoigian,diemcao) values ('3', '1','30', '0') ");
+				db.execSQL("insert into thongtin(_id,quan, level,thoigian,Tien) values ('1','3', '1','30', '3') ");
+				// insert table Items
+				db.execSQL("insert into Items(_id, Ten,GiaTien) values ('1','ThoiGian', '3') ");
+				db.execSQL("insert into Items(_id, Ten,GiaTien) values ('2','Quan', '3') ");
+			
 				Log.v("<Database insert>", "thanh cong");
 			} catch (Exception e) {
 				Log.v("<Database insert>", e.getMessage());
 			}
 
-			// db.close();
+			
 			Log.v("<Database create>", "All done!");
 		} catch (SQLiteException e) {
 			Log.v("<Database create>", e.getMessage());
-			// Toast.makeText(getApplicationContext(), "",
-			// Toast.LENGTH_SHORT).show();
+			
 		}
 		// db.close();
 	}
@@ -71,13 +79,37 @@ public class AcessHelper {
 				mycursor.moveToNext();
 				quan = Integer.valueOf(mycursor.getString(macot));
 				Log.v("getquan", String.valueOf(quan));
+				mycursor.close();
 			}
 		} catch (Exception e) {
 			Log.v("getquan", e.toString());
 		}
+	
 		return quan;
 	}
+	public int GetItemsCost(int id) {
+		int tien = 0;
+		try {
+			Cursor mycursor = db.rawQuery(
+					"select GiaTien from Items where _id ='"+id+"'", null);
+			if (mycursor != null) {
+				int macot = mycursor.getColumnIndex("GiaTien");
+				mycursor.moveToNext();
+				tien = Integer.valueOf(mycursor.getString(macot));
+				Log.v("giatien", String.valueOf(tien));
+				mycursor.close();
+			}
+		} catch (Exception e) {
+			Log.v("giatien", e.toString());
+		}
+	
+		return tien;
+	}
+	public void nhapGiaItem(int id,int cost) {
+		db.execSQL("update  Items SET GiaTien = '" + String.valueOf(cost)
+				+ "' WHERE _id = '"+id+"'");
 
+	}
 	public void nhapquan(int quan) {
 		db.execSQL("update  thongtin SET quan = '" + String.valueOf(quan)
 				+ "' WHERE _id = '1'");
@@ -96,8 +128,8 @@ public class AcessHelper {
 
 	}
 
-	public void nhapdiemcao(int quan) {
-		db.execSQL("update  thongtin SET diemcao = '" + String.valueOf(quan)
+	public void nhapTien(int quan) {
+		db.execSQL("update  thongtin SET Tien = '" + String.valueOf(quan)
 				+ "' WHERE _id = '1'");
 
 	}
@@ -111,6 +143,7 @@ public class AcessHelper {
 				int macot = mycursor.getColumnIndex("level");
 				mycursor.moveToNext();
 				level = Integer.valueOf(mycursor.getString(macot));
+				mycursor.close();
 			}
 		} catch (Exception e) {
 			Log.v("getlevel", e.toString());
@@ -119,21 +152,23 @@ public class AcessHelper {
 		return level;
 	}
 
-	public int Getdiemcao() {
-		int level = 1;
+	public int GetTien() {
+		int Tien = 1;
 		try {
 			Cursor mycursor = db.rawQuery(
-					"select diemcao from thongtin where _id ='1'", null);
+					"select Tien from thongtin where _id ='1'", null);
 			if (mycursor != null) {
-				int macot = mycursor.getColumnIndex("diemcao");
+				int macot = mycursor.getColumnIndex("Tien");
 				mycursor.moveToNext();
-				level = Integer.valueOf(mycursor.getString(macot));
+				Tien = Integer.valueOf(mycursor.getString(macot));
+				Log.v("getTien", mycursor.getString(macot));
+				mycursor.close();
 			}
 		} catch (Exception e) {
-			Log.v("getdiemcao", e.toString());
+			Log.v("getTien", e.toString());
 		}
 
-		return level;
+		return Tien;
 	}
 
 	public int Getthoigian() {
@@ -145,6 +180,7 @@ public class AcessHelper {
 				int macot = mycursor.getColumnIndex("thoigian");
 				mycursor.moveToNext();
 				thoigian = Integer.valueOf(mycursor.getString(macot));
+				mycursor.close();
 			}
 		} catch (Exception e) {
 			Log.v("getthoigian", e.toString());

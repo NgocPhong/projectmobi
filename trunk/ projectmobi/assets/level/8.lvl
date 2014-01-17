@@ -1,7 +1,7 @@
 <level Keyword="example" speed ="4">    
     <entity x="100" y="100" type="nomalballoon" time="1f" char="e"/>
     <entity x="200" y="200" type="nomalballoon" time="2f" char="b"/>
-    <entity x="300" y="200" type="nomalballoon" time="3f" char=""/>
+    <entity x="300" y="200" type="nomalballoon" time="3f" char="z"/>
     <entity x="250" y="300" type="nomalballoon" time="4f" char="h"/>
     <entity x="320" y="240" type="nomalballoon" time="5f" char="v"/>
     <entity x="200" y="270" type="trap" time="6f" char="m"/>

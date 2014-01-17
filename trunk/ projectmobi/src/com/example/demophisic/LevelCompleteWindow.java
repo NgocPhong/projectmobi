@@ -1,6 +1,12 @@
 package com.example.demophisic;
 
+/////////////////////////////////////////////////////////////////////////////////
+////////////////////1112219 - cu ngoc phong/////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.sprite.Sprite;
@@ -48,9 +54,9 @@ public class LevelCompleteWindow extends Sprite {
 		attachChild(star3);
 	}
 
-	private Sprite next;
-	private Sprite home;
-	private Sprite restart;
+	public Sprite next;
+	public Sprite home;
+	public Sprite restart;
 
 	private void attachmenu(VertexBufferObjectManager pSpriteVertexBufferObject) {
 		next = new Sprite(350, 80,
@@ -106,6 +112,22 @@ public class LevelCompleteWindow extends Sprite {
 		attachChild(next);
 		attachChild(home);
 		attachChild(restart);
+		
+		
+	}
+	
+
+	@Override
+	public void onDetached() {
+		try{
+		game.unregisterTouchArea(next);
+		game.unregisterTouchArea(restart);
+		game.unregisterTouchArea(home);
+		}
+		catch(Exception e){
+			
+		}
+		super.onDetached();
 	}
 
 	/**
@@ -114,12 +136,18 @@ public class LevelCompleteWindow extends Sprite {
 	 * @param starsCount
 	 */
 	public void display(StarsCount starsCount, Scene scene, Camera camera) {
+		scene.registerTouchArea(next);
+		scene.registerTouchArea(home);
+		scene.registerTouchArea(restart);
+		next.setVisible(true);
 		// Change stars tile index, based on stars count (1-3)
 		switch (starsCount) {
 		case ZERO:
 			star1.setCurrentTileIndex(1);
 			star2.setCurrentTileIndex(1);
 			star3.setCurrentTileIndex(1);
+			next.setVisible(false);
+			game.unregisterTouchArea(next);
 			break;
 		case ONE:
 			star1.setCurrentTileIndex(0);
@@ -146,11 +174,19 @@ public class LevelCompleteWindow extends Sprite {
 
 		// Attach our level complete panel in the middle of camera
 		setPosition(camera.getCenterX(), camera.getCenterY() + 100);
-		scene.registerTouchArea(next);
-		scene.registerTouchArea(home);
-		scene.registerTouchArea(restart);
+		
+		if(this.hasParent() == false){
 		scene.attachChild(this);
-		scene.clearUpdateHandlers();
+		//scene.setChildrenIgnoreUpdate(true);
+		this.registerUpdateHandler(new TimerHandler(0.001f,
+				new ITimerCallback() {
+					public void onTimePassed(TimerHandler pTimerHandler) {
+						game.clearUpdateHandlers();
 
+					}
+				}));
+	
+		}
+		
 	}
 }

@@ -1,9 +1,15 @@
 package com.example.demophisic;
 
+/////////////////////////////////////////////////////////////////////////////////
+////////////////////1112219 - cu ngoc phong/////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
@@ -41,6 +47,7 @@ import com.example.demophisic.SceneManager.SceneType;
 
 public class GameScene extends BaseScene implements IOnMenuItemClickListener {
 	private static AcessHelper infor;
+	// load level
 	private static final String TAG_ENTITY = "entity";
 	private static final String TAG_ENTITY_ATTRIBUTE_X = "x";
 	private static final String TAG_ENTITY_ATTRIBUTE_Y = "y";
@@ -48,21 +55,40 @@ public class GameScene extends BaseScene implements IOnMenuItemClickListener {
 	private static final String TAG_ENTITY_ATTRIBUTE_Time = "time";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BALLOON = "nomalballoon";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TRAP = "trap";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COMPLETE = "complete";
 
 	private static final String TAG_LEVEL_ATTRIBUTE_Keyword = "Keyword";
 	private static final String TAG_LEVEL_ATTRIBUTE_SPEED = "speed";
 	private static final String TAG_ENTITY_ATTRIBUTE_Char = "char";
+	// game play
 	private static String keyword = "lk";
 	private static String levelscore = "";
 	private LevelCompleteWindow levelCompleteWindow;
 	private static int pos = 0;
 	private List<AnimatedSprite> listballoon = new ArrayList<AnimatedSprite>();
-
+	private static TimerHandler timerHandler;
+	private static int timeRemaining;
 	// thong tin nguoi choi
 	private static int Mang;
 	private static int thoigian;
 	private static int speed;
 	private static Text textkey;
+	private static int curentlevel = 1;
+	// HUD
+	Sprite rainbow;
+	private HUD gameHUD;
+	private Text keyString;
+	private Text mangText;
+	private Text timer;
+	// menu
+	private MenuScene gameChildScene;
+	private static IMenuItem playGameItem;
+	private static IMenuItem PauseGameItem;
+	private final int Game_PLAY = 0;
+	private final int Game_Pause = 1;
+	private Sprite clock;
+	private static Music MWord;
+	private static Music MusicChar;
 
 	private void loadLevel(int levelID) {
 		final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
@@ -80,13 +106,16 @@ public class GameScene extends BaseScene implements IOnMenuItemClickListener {
 								TAG_LEVEL_ATTRIBUTE_Keyword);
 						speed = SAXUtils.getIntAttributeOrThrow(pAttributes,
 								TAG_LEVEL_ATTRIBUTE_SPEED);
-						textkey = new TickerText(240, 400,
-								resourcesManager.font, keyword,
-								new TickerTextOptions(HorizontalAlign.CENTER,
-										5), vbom);
+						textkey = new TickerText(
+								240,
+								400,
+								resourcesManager.font,
+								keyword,
+								new TickerTextOptions(HorizontalAlign.CENTER, 5),
+								vbom);
 						textkey.registerEntityModifier(new SequenceEntityModifier(
-								new ParallelEntityModifier(new AlphaModifier(
-										5, 0.0f, 1.0f))) {
+								new ParallelEntityModifier(new AlphaModifier(5,
+										0.0f, 1.0f))) {
 
 							@Override
 							protected void onModifierFinished(IEntity pItem) {
@@ -99,8 +128,15 @@ public class GameScene extends BaseScene implements IOnMenuItemClickListener {
 						textkey.setBlendFunction(GLES20.GL_SRC_ALPHA,
 								GLES20.GL_ONE_MINUS_SRC_ALPHA);
 						GameScene.this.attachChild(textkey);
-					
-
+						// an thanh cua chuoi
+						try {
+							MWord = MusicFactory.createMusicFromAsset(
+									engine.getMusicManager(), activity,
+									"mfx/ogg/words/" + keyword + ".ogg");
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						MWord.play();
 						return GameScene.this;
 					}
 
@@ -145,23 +181,29 @@ public class GameScene extends BaseScene implements IOnMenuItemClickListener {
 				+ ".lvl");
 	}
 
-	private static int curentlevel = 1;
-
 	// man tiep theo
 	public void nextlevel() {
+		try {
+			GameScene.this.clearUpdateHandlers();
+			this.detachball();
+			this.clearEntityModifiers();
+			this.detachChild(textkey);
+			this.registerUpdateHandler(new TimerHandler(0.5f,
+					new ITimerCallback() {
+						public void onTimePassed(TimerHandler pTimerHandler) {
+							init();
+							detachChild(levelCompleteWindow);
+							curentlevel += 1;
+							infor.nhaplevel(curentlevel);
+							if (curentlevel <= 10)
+								loadLevel(curentlevel);
 
-		GameScene.this.clearUpdateHandlers();
-		this.detachball();
-		this.detachChild(levelCompleteWindow);
-		this.detachChild(textkey);
-		//this.setIgnoreUpdate(false);
-		this.clearEntityModifiers();
-		//this.clearTouchAreas();
-		init();
+						}
+					}));
+			// this.clearTouchAreas();
+		} catch (Exception e) {
 
-		curentlevel += 1;
-		infor.nhaplevel(curentlevel);
-		loadLevel(curentlevel);
+		}
 		// infor.nhaplevel(curentlevel);
 	}
 
@@ -169,82 +211,40 @@ public class GameScene extends BaseScene implements IOnMenuItemClickListener {
 	public void restartlevel() {
 		GameScene.this.clearUpdateHandlers();
 		this.detachball();
-		this.detachChild(levelCompleteWindow);
-		this.detachChild(textkey);
-		this.setIgnoreUpdate(false);
-		this.clearEntityModifiers();
+		this.registerUpdateHandler(new TimerHandler(0.5f,
+				new ITimerCallback() {
+					public void onTimePassed(TimerHandler pTimerHandler) {
+						detachChild(levelCompleteWindow);
+						detachChild(textkey);
+						setIgnoreUpdate(false);
+						clearEntityModifiers();
+
+						init();
+						loadLevel(curentlevel);
+					}
+				}));
 		
-		init();
-		loadLevel(curentlevel);
+
 	}
 
 	// them bong
 	public void additem(int x, int y, String type, String mchar,
 			final String key) {
 		final AnimatedSprite face;
-
+		// this.speed -= 0.01;
 		if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BALLOON)) {
 			face = makeballoom(x, y, mchar);
-			/*
-			 * new balloon(x, y, resourcesManager.animate_balloon, vbom,
-			 * character) {
-			 * 
-			 * @Override public boolean onAreaTouched(TouchEvent
-			 * pSceneTouchEvent, float X, float Y) { if
-			 * (pSceneTouchEvent.isActionDown()) { this.setScale(1.5f); }
-			 * if(pSceneTouchEvent
-			 * .isActionOutside()||pSceneTouchEvent.isActionUp()){ detachSelf();
-			 * resourcesManager.music.play(); if
-			 * (checkcorrect(this.getmText())==false){
-			 * 
-			 * }
-			 * 
-			 * 
-			 * 
-			 * } return true; } };
-			 */
 
 		} else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TRAP)) {
 			// vat the khac
 			face = maketrap(x, y, mchar);
-			/*
-			 * new balloon(x, y, resourcesManager.animate_balloon, vbom,
-			 * character) {
-			 * 
-			 * @Override public boolean onAreaTouched(TouchEvent
-			 * pSceneTouchEvent, float X, float Y) { if
-			 * (pSceneTouchEvent.isActionDown()) {
-			 * 
-			 * // decreadmang(); detachSelf();
-			 * 
-			 * } return true; } };
-			 */
 
-		
 		} else {
 			throw new IllegalArgumentException();
 		}
-		MoveYModifier move = new MoveYModifier(speed, 0, 800) {
-			@Override
-			protected void onModifierFinished(IEntity pItem) {
-				pItem.setVisible(false);
-				GameScene.this.unregisterTouchArea(pItem);
 
-				// TODO Auto-generated method stub
-				super.onModifierFinished(pItem);
-			}
-		};
-		face.registerEntityModifier(move);
-		/*
-		 * MoveYModifier move = new MoveYModifier(10, 0, 600) {
-		 * 
-		 * @Override protected void onModifierFinished(IEntity pItem) {
-		 * pItem.setVisible(false); // face.detachSelf(); // TODO Auto-generated
-		 * method stub super.onModifierFinished(pItem); } }; if
-		 * (move.isFinished()) { face.detachSelf(); }
-		 * face.registerEntityModifier(move);
-		 */
-		// registerTouchArea(face);
+		// face.registerEntityModifier(move);
+
 		listballoon.add(face);
 		face.setCullingEnabled(true);
 
@@ -253,7 +253,6 @@ public class GameScene extends BaseScene implements IOnMenuItemClickListener {
 
 	@Override
 	public void createScene() {
-	
 
 		this.setBackground(new SpriteBackground(new Sprite(240, 400,
 				resourcesManager.game_background_region, vbom)));
@@ -262,31 +261,19 @@ public class GameScene extends BaseScene implements IOnMenuItemClickListener {
 		init();
 		createGame();
 		levelCompleteWindow = new LevelCompleteWindow(vbom, this);
-		this.registerTouchArea(levelCompleteWindow);
+	//	this.registerTouchArea(levelCompleteWindow);
 		// loadLevel(1);
 
 	}
-
-	Sprite rainbow;
 
 	// balloon face;
 	private void createGame() {
 
 		// animate.animate(new long[]{100, 100, 100},3,5,true);
-		loadLevel(curentlevel);
+		if (curentlevel <= 10)
+			loadLevel(curentlevel);
 	}
 
-	private HUD gameHUD;
-	private Text keyString;
-	private Text mangText;
-	private Text timer;
-	// menu
-	private MenuScene gameChildScene;
-	private static IMenuItem playGameItem;
-	private static IMenuItem PauseGameItem;
-	private final int Game_PLAY = 0;
-	private final int Game_Pause = 1;
-private Sprite clock;
 	private void createHUD() {
 		// create pause button
 		gameChildScene = new MenuScene(camera);
@@ -311,14 +298,14 @@ private Sprite clock;
 		gameHUD = new HUD();
 		// create rain bow
 		rainbow = new Sprite(240, 100, resourcesManager.rainwbow, vbom);
-		
+
 		keyString = new Text(300, 200, resourcesManager.font,
 				"mang: 0123456789asdfghjklqwertyuiopzxcvbnm", new TextOptions(
 						HorizontalAlign.CENTER), vbom);
 		keyString.setText("");
 		keyString.setPosition(240, 70);
 		rainbow.attachChild(keyString);
-		Sprite heart = new Sprite(300, 750, resourcesManager.heart_region, vbom);
+		Sprite heart = new Sprite(330, 750, resourcesManager.heart_region, vbom);
 		heart.setScale(0.3f);
 		gameHUD.attachChild(rainbow);
 		gameHUD.attachChild(heart);
@@ -326,10 +313,10 @@ private Sprite clock;
 		// CREATE mang
 		mangText = new Text(400, 750, resourcesManager.font, "X 0123456789",
 				new TextOptions(HorizontalAlign.LEFT), vbom);
-		
-		mangText.setText(String.valueOf(this.Mang) + " X");
-		//CREATE timer
-		clock = new Sprite(130, 750, resourcesManager.balloon_region, vbom);
+
+		mangText.setText(String.valueOf(this.Mang));
+		// CREATE timer
+		clock = new Sprite(130, 750, resourcesManager.clock_region, vbom);
 		clock.setScale(0.3f);
 		timer = new Text(200, 750, resourcesManager.font, "X 0123456789",
 				new TextOptions(HorizontalAlign.LEFT), vbom);
@@ -338,16 +325,23 @@ private Sprite clock;
 		gameHUD.attachChild(clock);
 		gameHUD.attachChild(timer);
 		setChildScene(gameChildScene);
+		// pause
+		pause = new Sprite(240, 400, this.resourcesManager.game_pause_region,
+				vbom);
+
+		gameHUD.attachChild(pause);
+		pause.setVisible(false);
 		camera.setHUD(gameHUD);
+	
 	}
 
 	public void detachball() {
 		for (int i = 0; i < listballoon.size(); i++) {
 			listballoon.get(i).detachSelf();
-			
+
 		}
 		listballoon.clear();
-	
+
 	}
 
 	public void unresigntouchballoon() {
@@ -361,31 +355,32 @@ private Sprite clock;
 			this.registerTouchArea(listballoon.get(i));
 		}
 	}
-	private static TimerHandler timerHandler; 
-	private  static int timeRemaining = 20;
-	//count time
-	private void counttime(){
-		
-		// ...
+
+	// count time
+	private void counttime() {
+		timeRemaining = infor.Getthoigian();
+
 		timerHandler = new TimerHandler(1.0f, new ITimerCallback() {
-		        public void onTimePassed(TimerHandler pTimerHandler) {
-		                timeRemaining--;
-		                if (timeRemaining == 0) {
-		                	cacula_score();
-		                }
-		                if (timeRemaining <= 10) {
-		                     //   timerTickSound.play();
-		                }
-		                if (timeRemaining > 0){
-		                	   timerHandler.reset();
-		                	   Log.v("time",String.valueOf(timeRemaining));
-		                	   timer.setText(String.valueOf(timeRemaining));
-		                }
-		                     
-		        }
+			public void onTimePassed(TimerHandler pTimerHandler) {
+				timeRemaining--;
+				timer.setText(String.valueOf(timeRemaining));
+				if (timeRemaining == 0) {
+					cacula_score();
+					
+				}
+				
+				if (timeRemaining > 0) {
+					timerHandler.reset();
+					Log.v("time", String.valueOf(timeRemaining));
+
+				}
+				Log.v("time", String.valueOf(timeRemaining));
+
+			}
 		});
 		this.registerUpdateHandler(timerHandler);
 	}
+
 	// init value
 	public void init() {
 		this.keyString.setText("");
@@ -394,52 +389,54 @@ private Sprite clock;
 		this.detachChildren();
 		this.pos = 0;
 		this.levelscore = "";
+		timerHandler = null;
 		counttime();
 		curentlevel = infor.Getlevel();
 
 		this.Mang = infor.Getquan();
-		mangText.setText(String.valueOf(Mang) + " X");
+		mangText.setText(String.valueOf(Mang));
 		Log.v("quan", String.valueOf(Mang));
 		this.thoigian = infor.Getthoigian();
-		pause = new Sprite(240, 400, this.resourcesManager.game_pause_region,
-				vbom);
-
-		this.attachChild(pause);
-		pause.setVisible(false);
+		
 	}
 
 	// caculate score
 	public void cacula_score() {
 		detachball();
+		int money = 0;
+		Log.v("cacula_score", levelscore);
 		if (levelscore.length() == 0) {
 			levelCompleteWindow
 					.display(StarsCount.ZERO, GameScene.this, camera);
+
 			Log.v("score", "zero star");
 		} else if (levelscore.length() < keyword.length() / 2) {
 			// one start
+			money = 1;
 			// detachball();
 			levelCompleteWindow.display(StarsCount.ONE, GameScene.this, camera);
 			Log.v("score", "one star");
 		} else if (levelscore.length() < keyword.length()) {
-
+			money = 2;
 			levelCompleteWindow.display(StarsCount.TWO, GameScene.this, camera);
 			Log.v("score", "two star");
 		} else if (levelscore.length() == keyword.length()) {
-
+			money = 3;
 			levelCompleteWindow.display(StarsCount.THREE, GameScene.this,
 					camera);
 			Log.v("score", "three star");
 		}
+		infor.nhapTien(infor.GetTien() + money);
 	}
 
 	// check key is equals keyword
 	public boolean checkkey() {
-		
-		if (keyString.getText().equals(keyword)){
+
+		if (keyString.getText().equals(keyword)) {
 			cacula_score();
 			return true;
 		}
-			
+
 		return false;
 	}
 
@@ -469,20 +466,33 @@ private Sprite clock;
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
 					float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (isIstouch() == false) {
-
-					this.setIstouch(true);
-					this.detachChildren();
-					this.animate(new long[] { 100, 200, 300, 200, 200, 200 },
-							0, 5, false);
-					// GameScene.this.setIgnoreUpdate(true);
-					// if (pSceneTouchEvent.isActionUp())
-					if (checkcorrect(this.getmText()) == false)
-						decreadmang();
-					else 
-						checkkey();
+				if (pSceneTouchEvent.isActionUp()) {
+					if (this.isIstouch() == false) {
+						
+						this.setIstouch(true);
+						this.detachChildren();
+						this.animate(
+								new long[] { 100, 200, 300, 200, 200, 200 }, 0,
+								5, false);
+						// GameScene.this.setIgnoreUpdate(true);
+						// if (pSceneTouchEvent.isActionUp())
+						// an thanh ki tu
+						try {
+							MusicChar = MusicFactory.createMusicFromAsset(
+									engine.getMusicManager(), activity,
+									"mfx/ogg/alphabet/" + this.getmText()
+											+ ".ogg");
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						MusicChar.play();
+						if (checkcorrect(this.getmText()) == false) {
+							decreadmang();
+							speed -= 0.001;
+						} else
+							checkkey();
+					}
 				}
-
 				// TODO Auto-generated method stub
 				return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
 						pTouchAreaLocalY);
@@ -501,7 +511,8 @@ private Sprite clock;
 			}
 
 		};
-	/*	MoveYModifier move = new MoveYModifier(10, 0, 800) {
+		Log.v("Makeballon", "1");
+		MoveYModifier move = new MoveYModifier(speed, 0, 800) {
 			@Override
 			protected void onModifierFinished(IEntity pItem) {
 				pItem.setVisible(false);
@@ -511,9 +522,8 @@ private Sprite clock;
 				super.onModifierFinished(pItem);
 			}
 		};
-*/
-		animate.animate(new long[] { 200, 200 }, 0, 1, true);
-	//	animate.registerEntityModifier(move);
+		animate.animate(new long[] { 250, 250 }, 0, 1, true);
+		animate.registerEntityModifier(move);
 		// this.attachChild(animate);
 		this.registerTouchArea(animate);
 		return animate;
@@ -529,15 +539,29 @@ private Sprite clock;
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
 					float pTouchAreaLocalX, float pTouchAreaLocalY) {
-				if (isIstouch() == false) {
-					this.setIstouch(true);
-					this.detachChildren();
-					this.animate(new long[] { 100, 200, 300, 200, 200, 200 },
-							0, 5, false);
-					// GameScene.this.setIgnoreUpdate(true);
-					// if (pSceneTouchEvent.isActionUp())
-
-					decreadmang();
+				if (pSceneTouchEvent.isActionUp()) {
+					if (this.isIstouch() == false) {
+						this.setIstouch(true);
+						this.detachChildren();
+						this.animate(
+								new long[] { 100, 200, 300, 200, 200, 200 }, 0,
+								5, false);
+						// GameScene.this.setIgnoreUpdate(true);
+						// if (pSceneTouchEvent.isActionUp())
+						// an thanh ki tu
+					
+						try {
+							MusicChar = MusicFactory.createMusicFromAsset(
+									engine.getMusicManager(), activity,
+									"mfx/ogg/alphabet/" + this.getmText()
+											+ ".ogg");
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						MusicChar.play();
+						decreadmang();
+						speed -= 0.001;
+					}
 				}
 				// TODO Auto-generated method stub
 				return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
@@ -557,21 +581,20 @@ private Sprite clock;
 			}
 
 		};
-	/*	MoveYModifier move = new MoveYModifier(10, 0, 800) {
+		MoveYModifier move = new MoveYModifier(speed, 0, 800) {
 			@Override
 			protected void onModifierFinished(IEntity pItem) {
 				pItem.setVisible(false);
 				GameScene.this.unregisterTouchArea(pItem);
-				// face.detachSelf();
+
 				// TODO Auto-generated method stub
 				super.onModifierFinished(pItem);
 			}
-		};*/
-
+		};
 		animate.animate(new long[] { 200, 200 }, 0, 1, true);
-	//	animate.registerEntityModifier(move);
-		// this.attachChild(animate);
+		animate.registerEntityModifier(move);
 		this.registerTouchArea(animate);
+		Log.v("Makeballon", "1");
 		return animate;
 
 	}
@@ -580,9 +603,9 @@ private Sprite clock;
 
 	private void decreadmang() {
 		this.Mang -= 1;
-		if (Mang > 0)
-			mangText.setText(String.valueOf(Mang) + " X");
-		else
+		mangText.setText(String.valueOf(Mang));
+		if (Mang == 0)
+
 			cacula_score();
 
 	}
@@ -602,9 +625,9 @@ private Sprite clock;
 	public void disposeScene() {
 		camera.setHUD(null);
 		camera.setCenter(240, 400);
-		this.detachChildren();
-		this.detachSelf();
-		this.dispose();
+		// this.detachChildren();
+		// this.detachSelf();
+		// this.dispose();
 		// TODO code responsible for disposing scene
 		// removing all game scene objects.
 	}
@@ -614,6 +637,7 @@ private Sprite clock;
 	@Override
 	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,
 			float pMenuItemLocalX, float pMenuItemLocalY) {
+		pause.setZIndex(1);
 		switch (pMenuItem.getID()) {
 		case Game_PLAY:
 			this.setIgnoreUpdate(false);
