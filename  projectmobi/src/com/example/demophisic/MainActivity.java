@@ -1,5 +1,9 @@
 package com.example.demophisic;
 
+/////////////////////////////////////////////////////////////////////////////////
+////////////////////1112219 - cu ngoc phong/////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 import java.io.IOException;
 
 import org.andengine.engine.Engine;
@@ -43,6 +47,32 @@ public class MainActivity extends BaseGameActivity implements IOnSceneTouchListe
 	//private SceneType currentScene = SceneType.SPLASH;
 	
 	@Override
+	protected synchronized void onResume() {
+		// TODO Auto-generated method stub
+		mEngine.getMusicManager().setMasterVolume(1.0f);
+		super.onResume();
+	}
+
+	@Override
+	public synchronized void onResumeGame() {
+		// TODO Auto-generated method stub
+		super.onResumeGame();
+	}
+
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		mEngine.getMusicManager().setMasterVolume(0.0f);
+		super.onPause();
+	}
+
+	@Override
+	public synchronized void onPauseGame() {
+		// TODO Auto-generated method stub
+		super.onPauseGame();
+	}
+
+	@Override
 	protected void onDestroy() {
 		super.onDestroy();
         System.exit(0);	
@@ -76,8 +106,7 @@ public class MainActivity extends BaseGameActivity implements IOnSceneTouchListe
 	public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
 	{
 		SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
-		/*initSplashScene();
-        pOnCreateSceneCallback.onCreateSceneFinished(this.splashScene);*/
+		
 	}
 
 	@Override

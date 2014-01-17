@@ -1,5 +1,9 @@
 package com.example.demophisic;
 
+/////////////////////////////////////////////////////////////////////////////////
+////////////////////1112219 - cu ngoc phong/////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 import java.io.IOException;
 
 import org.andengine.audio.music.Music;
@@ -47,17 +51,19 @@ public class ResourcesManager {
 	// menu screen
 	public ITextureRegion menu_background_region;
 	public ITextureRegion play_region;
+	public ITextureRegion shop_region;
+	public ITextureRegion help_region;
 	public ITextureRegion options_region;
 	public ITextureRegion sound_on_region;
 	public ITextureRegion sound_off_region;
 	public ITextureRegion reset_region;
-	
+	public ITextureRegion menu_help_background_region;
 	private BuildableBitmapTextureAtlas menuTextureAtlas;
 	private BuildableBitmapTextureAtlas OptionTextureAtlas;
 	// Game resouse
 	public ITextureRegion game_background_region;
-	private BuildableBitmapTextureAtlas TextureAtlas;
-	public ITextureRegion balloon_region;
+
+	public ITextureRegion clock_region;
 	public ITextureRegion game_pause_region;
 
 	// Game Texture
@@ -67,10 +73,18 @@ public class ResourcesManager {
 	public BuildableBitmapTextureAtlas levelcompleteTextureAtlas;
 	// Game Texture Regions
 	public ITextureRegion playgame_region;
-	
+
 	public ITextureRegion pausegame_region;
 	public ITextureRegion heart_region;
 	public ITextureRegion rainwbow;
+	// shop scence
+	public BuildableBitmapTextureAtlas ShopTextureAtlas;
+	public BuildableBitmapTextureAtlas ShopBackgroundTextureAtlas;
+	public ITextureRegion clock_Shop_region;
+	public ITextureRegion mssg_Shop_region;
+	public ITextureRegion heart_Shop_region;
+	public ITextureRegion coin_Shop_region;
+	public ITextureRegion background_Shop_region;
 	// ---------------------------------------------
 	// Music
 	// ---------------------------------------------
@@ -110,17 +124,24 @@ public class ResourcesManager {
 		menu_background_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity,
 						"menu_background.png");
+		menu_help_background_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(menuTextureAtlas, activity,
+						"menu_help_background.png");
 		play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				menuTextureAtlas, activity, "play.png");
+		shop_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				menuTextureAtlas, activity, "Shop.png");
+		help_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(menuTextureAtlas, activity, "help.png");
 		options_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(menuTextureAtlas, activity, "options.png");
 		OptionTextureAtlas = new BuildableBitmapTextureAtlas(
 				activity.getTextureManager(), 2048, 1024,
 				TextureOptions.BILINEAR);
-		sound_on_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				OptionTextureAtlas, activity, "sound_on.png");
-		sound_off_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
-				OptionTextureAtlas, activity, "sound_off.png");
+		sound_on_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(OptionTextureAtlas, activity, "sound_on.png");
+		sound_off_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(OptionTextureAtlas, activity, "sound_off.png");
 		reset_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				OptionTextureAtlas, activity, "reset.png");
 		try {
@@ -129,9 +150,9 @@ public class ResourcesManager {
 							0, 1, 0));
 			this.menuTextureAtlas.load();
 			this.OptionTextureAtlas
-			.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
-					0, 1, 0));
-	this.OptionTextureAtlas.load();
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 1, 0));
+			this.OptionTextureAtlas.load();
 		} catch (final TextureAtlasBuilderException e) {
 			Debug.e(e);
 		}
@@ -171,8 +192,8 @@ public class ResourcesManager {
 
 		rainwbow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				gameTextureAtlas, activity, "rainbow.png");
-		balloon_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gameTextureAtlas, activity, "clock.png");
+		clock_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gameTextureAtlas, activity, "clock.png");
 		// sprite level complete
 		complete_window_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(levelcompleteTextureAtlas, activity,
@@ -181,14 +202,11 @@ public class ResourcesManager {
 				.createTiledFromAsset(levelcompleteTextureAtlas, activity,
 						"star.png", 2, 1);
 		complete_next_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gamepauseTextureAtlas, activity,
-						"next.png");
+				.createFromAsset(gamepauseTextureAtlas, activity, "next.png");
 		complete_home_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gamepauseTextureAtlas, activity,
-						"home.png");
+				.createFromAsset(gamepauseTextureAtlas, activity, "home.png");
 		complete_restart_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gamepauseTextureAtlas, activity,
-						"restart.png");
+				.createFromAsset(gamepauseTextureAtlas, activity, "restart.png");
 		// sprite game
 		animate_balloon = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(gameTextureAtlas, activity,
@@ -196,9 +214,8 @@ public class ResourcesManager {
 		animate_trap = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(gameTextureAtlas, activity, "trap.png",
 						6, 1);
-		heart_region = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(gamebackgroundTextureAtlas, activity,
-						"heart.png");
+		heart_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
+				gamebackgroundTextureAtlas, activity, "heart.png");
 		// pause
 		game_pause_region = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(gamepauseTextureAtlas, activity,
@@ -231,7 +248,7 @@ public class ResourcesManager {
 		} catch (final TextureAtlasBuilderException e) {
 			Debug.e(e);
 		}
-		
+
 	}
 
 	public void unloadGameTextures() {
@@ -286,11 +303,90 @@ public class ResourcesManager {
 	public void loadSplashScreen() {
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		splashTextureAtlas = new BitmapTextureAtlas(
-				activity.getTextureManager(), 800, 480,
+				activity.getTextureManager(), 480, 800,
 				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		splash_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				splashTextureAtlas, activity, "splash.png", 0, 0);
 		splashTextureAtlas.load();
+	}
+	public ITextureRegion buy_Shop_region;
+	private void loadShopGraphics() {
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/shop/");
+		ShopBackgroundTextureAtlas = new BuildableBitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		ShopTextureAtlas = new BuildableBitmapTextureAtlas(
+				activity.getTextureManager(), 1024, 1024,
+				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		background_Shop_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(ShopBackgroundTextureAtlas, activity,
+						"shop.png");
+		clock_Shop_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(ShopTextureAtlas, activity, "clock.png");
+		heart_Shop_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(ShopTextureAtlas, activity, "heart.png");
+		coin_Shop_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(ShopTextureAtlas, activity, "coins.png");
+		mssg_Shop_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(ShopTextureAtlas, activity, "chat.png");
+		buy_Shop_region = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(ShopTextureAtlas, activity, "buy.png");
+
+		try {
+			this.ShopBackgroundTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 1, 0));
+			this.ShopBackgroundTextureAtlas.load();
+			this.ShopTextureAtlas
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 1, 0));
+			this.ShopTextureAtlas.load();
+
+		} catch (final TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
+	}
+public Font shop_font;
+	private void loadShopFont() {
+		FontFactory.setAssetBasePath("font/");
+		final ITexture gameFontTexture = new BitmapTextureAtlas(
+				activity.getTextureManager(), 512, 512,
+				TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+		shop_font = FontFactory.createStrokeFromAsset(
+				activity.getFontManager(), gameFontTexture,
+				activity.getAssets(), "shop.ttf", 50, true, Color.WHITE,
+				2, Color.WHITE);
+		shop_font.load();
+	}
+
+	private void loadShopSounds() {
+
+	}
+
+	public void loadShop() {
+		loadShopGraphics();
+		loadShopFont();
+		loadShopSounds();
+	}
+
+	private void unloadShopGraphics() {
+		ShopBackgroundTextureAtlas.unload();
+		ShopTextureAtlas.unload();
+	}
+
+	private void unloadShopSound() {
+
+	}
+
+	private void unloadShopFont() {
+		shop_font.unload();
+	}
+
+	public void unloadShop() {
+		unloadShopGraphics();
+		unloadShopSound();
+		unloadShopFont();
 	}
 
 	public void unloadSplashScreen() {

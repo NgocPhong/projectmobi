@@ -1,13 +1,23 @@
 package com.example.demophisic;
 
+/////////////////////////////////////////////////////////////////////////////////
+////////////////////1112219 - cu ngoc phong/////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+
 import org.andengine.engine.camera.Camera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
+import org.andengine.entity.text.TextOptions;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.util.GLState;
+import org.andengine.util.adt.align.HorizontalAlign;
 
 import com.example.demophisic.SceneManager.SceneType;
 
 public class OptionScene extends BaseScene {
+	private static final String XOA = "Xóa Thành Công !";
 	private static AcessHelper infor = new AcessHelper();
 
 	@Override
@@ -49,14 +59,23 @@ public class OptionScene extends BaseScene {
 	private Sprite sound_on;
 	private Sprite sound_off;
 	private Sprite reset;
+	private Text soundtext;
+	private Text resettext;
 
 	private void createOptionChildScene() {
-		sound_on = new Sprite(240, 500, resourcesManager.sound_on_region, vbom) {
+		soundtext = new Text(240, 500, resourcesManager.font, "Sound game :",
+				new TextOptions(HorizontalAlign.CENTER), vbom);
+		soundtext.setScaleX(0.8f);
+		sound_on = new Sprite(240, 400, resourcesManager.sound_on_region, vbom) {
 
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
 					float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if(pSceneTouchEvent.isActionDown()){
+					sound_off.setScale(3.0f);
+				}
 				if (pSceneTouchEvent.isActionUp()) {
+					sound_off.setScale(3.5f);
 					OptionScene.this.registerTouchArea(sound_off);
 					OptionScene.this.unregisterTouchArea(sound_on);
 					this.setVisible(true);
@@ -69,14 +88,18 @@ public class OptionScene extends BaseScene {
 			}
 
 		};
-		sound_off = new Sprite(240, 500, resourcesManager.sound_off_region,
+		sound_off = new Sprite(240, 400, resourcesManager.sound_off_region,
 				vbom) {
 
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
 					float pTouchAreaLocalX, float pTouchAreaLocalY) {
 				// TODO Auto-generated method stub
+				if(pSceneTouchEvent.isActionDown()){
+					sound_on.setScale(3.0f);
+				}
 				if (pSceneTouchEvent.isActionUp()) {
+					sound_on.setScale(3.5f);
 					OptionScene.this.registerTouchArea(sound_on);
 					OptionScene.this.unregisterTouchArea(sound_off);
 					this.setVisible(true);
@@ -88,16 +111,39 @@ public class OptionScene extends BaseScene {
 			}
 
 		};
+		resettext = new Text(240, 300, resourcesManager.font, "reset game :",
+				new TextOptions(HorizontalAlign.CENTER), vbom);
+		final Text ketqua = new Text(240, 50, resourcesManager.font, XOA,
+				new TextOptions(HorizontalAlign.CENTER), vbom);
+		ketqua.setVisible(false);
+		
+		ketqua.setColor(getColor().BLACK);
+		ketqua.setScale(0.5f);
+		resettext.setScale(0.8f);
 		reset = new Sprite(240, 200, resourcesManager.reset_region, vbom) {
 
 			@Override
 			public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
 					float pTouchAreaLocalX, float pTouchAreaLocalY) {
+				if(pSceneTouchEvent.isActionDown()){
+					this.setScale(0.3f);
+				}
 				if (pSceneTouchEvent.isActionUp()) {
+					this.setScale(0.5f);
 					infor.nhaplevel(1);
 					infor.nhapquan(3);
-					infor.nhapthoigian(20);
-					infor.nhapdiemcao(0);
+					infor.nhapthoigian(30);
+					infor.nhapTien(30);
+					infor.nhapGiaItem(1, 3);
+					infor.nhapGiaItem(2, 3);
+					ketqua.setVisible(true);
+					this.registerUpdateHandler(new TimerHandler(1.0f,
+							new ITimerCallback() {
+								public void onTimePassed(TimerHandler pTimerHandler) {
+									ketqua.setVisible(false);
+
+								}
+							}));
 				}
 				// TODO Auto-generated method stub
 				return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX,
@@ -110,9 +156,12 @@ public class OptionScene extends BaseScene {
 		sound_off.setVisible(false);
 		this.attachChild(sound_off);
 		reset.setScale(0.5f);
-		this.registerTouchArea(sound_off);
+		this.registerTouchArea(sound_on);
 		this.registerTouchArea(reset);
 		this.attachChild(sound_on);
 		this.attachChild(reset);
+		this.attachChild(resettext);
+		this.attachChild(soundtext);
+		this.attachChild(ketqua);
 	}
 }
